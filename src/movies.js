@@ -25,18 +25,18 @@ function scoresAverage(moviesArray) {
     if (moviesArray.length != 0) {
         a = moviesArray
             .filter((record) => typeof record.score == "number")
-            .reduce((sum, record) => sum + record.score * 100, 0);
+            .reduce((sum, record) => sum + record.score, 0);
 
-        ret = Math.round(a / moviesArray.length, 2) / 100;
+        ret = a / moviesArray.length;
     }
 
-    return ret;
+    return parseFloat(ret.toFixed(2));
 }
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(moviesArray) {
     return scoresAverage(
-        moviesArray.filter((record) => record.genre == "Drama")
+        moviesArray.filter((record) => record.genre.includes("Drama"))
     );
 }
 
@@ -55,23 +55,23 @@ function orderByYear(moviesArray) {
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
 function orderAlphabetically(moviesArray) {
-    return moviesArray
+    return [...moviesArray]
         .map((e) => e.title)
         .filter((e) => typeof e == "string")
-        .sort((curr, prev) => (prev > curr ? -1 : prev == curr ? 0 : 1))
+        .sort((curr, prev) => (prev > curr ? -1 : 1))
         .slice(0, 20);
 }
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(moviesArray) {
-    return [...moviesArray].map(
+    return moviesArray.map(
         (e) =>
             (e = {
                 ...e,
                 duration:
                     e.duration.match(/\d+min/g) != null
-                        ? e.duration.match(/\d+/g)[0] * 60 + e.duration.match(/\d+/g)[1] * 1
-                        : e.duration.match(/\d+/g)[0] * 60,
+                        ? parseInt(e.duration.match(/\d+/g)[0]) * 60 + parseInt(e.duration.match(/\d+/g)[1]) * 1
+                        : parseInt(e.duration.match(/\d+/g)[0]) * 60,
             })
     );
 }
